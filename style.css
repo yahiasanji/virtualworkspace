@@ -1,0 +1,157 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Geist";
+  color: hsl(240 3.7% 15.9%);
+  font-size: 1em;
+}
+
+.page {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  background-color: hsl(0 0% 98%);
+  overflow-y: auto;
+}
+
+.workspace {
+  height: 100vh;
+  padding: 1em;
+  background-color: hsl(240 5.9% 90%);
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.staff-card {
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr;
+  align-items: center;
+  gap: 1em;
+  background: hsl(240 4.8% 95.9%);
+  border-radius: 6px;
+  padding: 1em;
+  margin-bottom: 0.5em;
+}
+
+.staff-card > img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.staff-card > div {
+  display: inherit;
+  font-size: 14px;
+}
+.staff-card > .card-info :first-child {
+  font-weight: 600;
+  font-size: 1em;
+}
+
+.btn {
+  font-family: "Geist";
+  background: none;
+  border: 2px solid #e4e4e7;
+  padding: 0.85em;
+  border-radius: 6px;
+  margin-block: 1em;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.8s ease-out;
+}
+
+.add-btn:hover {
+  background: #f4f4f5;
+}
+
+.edit-btn {
+  justify-self: center;
+  padding: 10px;
+  color: #52525b;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.edit-btn:hover {
+  color: #a1a1aa;
+}
+.workspace {
+  display: grid;
+  grid-template-columns: 2fr 0.5fr 1fr 1fr;
+  grid-template-rows: 2fr 0.5fr 2fr;
+  grid-auto-columns: 1fr;
+  gap: 16px 16px;
+  grid-auto-flow: row;
+  justify-items: center;
+  grid-template-areas:
+    "conference . server security"
+    "reception . . ."
+    "reception . staffroom archiveroom";
+}
+
+.reception {
+  grid-area: reception;
+}
+
+.conference {
+  grid-area: conference;
+}
+
+.server {
+  grid-area: server;
+}
+
+.security {
+  grid-area: security;
+}
+
+.staffroom {
+  grid-area: staffroom;
+}
+
+.archiveroom {
+  grid-area: archiveroom;
+}
+
+.workspace div {
+  background-color: #52525b;
+  width: 100%;
+  height: 100%;
+}
+
+dialog:open {
+  transform: scale(1);
+}
+
+dialog {
+  transform: scale(0);
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.2s;
+  border: none;
+  border-radius: 8px;
+}
+
+@starting-style {
+  dialog:open {
+    transform: scale(0);
+  }
+}

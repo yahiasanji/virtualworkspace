@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="page">
+      <div class="sidebar">
+        <h3>Unassigned Staff</h3>
+        <div class="cards-container">
+          <div class="staff-card">
+            <img src="https://avatar.iran.liara.run/public/30" alt="" />
+            <div class="card-info">
+              <span class="em-name">Yahia ABSI</span>
+              <span class="em-job">IT Engineer</span>
+            </div>
+            <span class="edit-btn">
+              <i class="fa-regular fa-pen-to-square"></i>
+            </span>
+          </div>
+        </div>
+
+        <button class="add btn">Add New Worker</button>
+
+        <dialog id="addworker">
+          Content here
+          <button class="close btn">close</button>
+        </dialog>
+      </div>
+
+      <div class="workspace">
+        <div class="reception"></div>
+        <div class="conference"></div>
+        <div class="server"></div>
+        <div class="security"></div>
+        <div class="staffroom"></div>
+        <div class="archiveroom"></div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
