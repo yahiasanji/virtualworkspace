@@ -77,8 +77,8 @@ body {
   transition: all 0.8s ease-out;
 }
 
-.add-btn:hover {
-  background: #f4f4f5;
+.btn:hover {
+  background: #e4e4e7;
 }
 
 .edit-btn {
@@ -135,6 +135,7 @@ body {
   background-color: #52525b;
   width: 100%;
   height: 100%;
+  border-radius: 8px;
 }
 
 dialog:open {
@@ -142,16 +143,45 @@ dialog:open {
 }
 
 dialog {
+  width: 70vw;
   transform: scale(0);
   transition-property: transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 0.2s;
   border: none;
   border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+  img {
+    width: 100px;
+  }
 }
 
 @starting-style {
   dialog:open {
     transform: scale(0);
   }
+}
+
+#Addworker {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  div {
+    align-self: center;
+  }
+}
+select {
+  appearance: base-select;
+  font-size: 0.85rem;
+  font-family: "Geist";
+}
+input,
+select {
+  padding: 1em;
+  border-radius: 5px;
+  border: 1px solid #a1a1aa;
+  width: 350px;
 }

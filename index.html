@@ -24,23 +24,50 @@
       <div class="sidebar">
         <h3>Unassigned Staff</h3>
         <div class="cards-container">
-          <div class="staff-card">
-            <img src="https://avatar.iran.liara.run/public/30" alt="" />
-            <div class="card-info">
-              <span class="em-name">Yahia ABSI</span>
-              <span class="em-job">IT Engineer</span>
+          <template id="staffcard">
+            <div class="staff-card">
+              <img src="https://avatar.iran.liara.run/public/30" alt="" />
+              <div class="card-info">
+                <span class="em-name">Yahia ABSI</span>
+                <span class="em-job">IT Engineer</span>
+              </div>
+              <span class="edit-btn">
+                <i class="fa-regular fa-pen-to-square"></i>
+              </span>
             </div>
-            <span class="edit-btn">
-              <i class="fa-regular fa-pen-to-square"></i>
-            </span>
-          </div>
+          </template>
         </div>
 
         <button class="add btn">Add New Worker</button>
 
         <dialog id="addworker">
-          Content here
-          <button class="close btn">close</button>
+          <img src="https://avatar.iran.liara.run/public/30" alt="" />
+          <form id="Addworker">
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter The Employee Name..."
+            />
+            <select name="role" id="">
+              <option value="">Choose a role</option>
+              <option value="IT">IT Technician</option>
+              <option value="REC">Reception</option>
+              <option value="SEC">Security Agent</option>
+              <option value="MAN">Manager</option>
+              <option value="CLN">Cleaning</option>
+              <option value="AUT">Autres</option>
+            </select>
+            <input
+              type="url"
+              name="imageurl"
+              placeholder="Enter The Image URL..."
+            />
+            <input type="text" name="email" placeholder="Enter The E-mail..." />
+            <div>
+              <button class="close btn">close</button>
+              <button type="submit" class="btn">Add Worker</button>
+            </div>
+          </form>
         </dialog>
       </div>
 
