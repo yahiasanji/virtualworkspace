@@ -43,11 +43,13 @@
         <dialog id="addworker">
           <img src="https://avatar.iran.liara.run/public/30" alt="" />
           <form id="Addworker">
+            <label for="name">Name</label>
             <input
               type="text"
               name="name"
               placeholder="Enter The Employee Name..."
             />
+            <label for="role">Role</label>
             <select name="role" id="">
               <option value="">Choose a role</option>
               <option value="IT">IT Technician</option>
@@ -57,15 +59,31 @@
               <option value="CLN">Cleaning</option>
               <option value="AUT">Autres</option>
             </select>
+            <label for="imageurl">Image URL</label>
             <input
               type="url"
               name="imageurl"
               placeholder="Enter The Image URL..."
             />
+            <label for="email">Email</label>
             <input type="text" name="email" placeholder="Enter The E-mail..." />
+
+            <div class="experiences">
+              <span>Experiences</span>
+              <label for="ex-role">Role</label>
+              <input type="text" name="ex-role" />
+              <label for="company"> Company</label>
+              <input type="text" name="company" />
+              <label for="exp-start">Start Date</label>
+              <input type="date" name="exp-start" />
+              <label for="exp-end">End Date</label>
+              <input type="date" name="exp-end" />
+              <button>+ Add Experience</button>
+            </div>
+
             <div>
-              <button class="close btn">close</button>
-              <button type="submit" class="btn">Add Worker</button>
+              <button class="close btn">Close</button>
+              <button type="submit" class="btn subm-btn">Save Changes</button>
             </div>
           </form>
         </dialog>

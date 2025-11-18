@@ -2,10 +2,7 @@ const dialogElem = document.getElementById("addworker");
 const showBtn = document.querySelector(".add");
 const closeBtn = document.querySelector(".close");
 
-const cardscontainer = document.querySelector(".cards-container");
 const staffcardtmpl = document.getElementById("staffcard");
-const staff_card = document.querySelector(".staff-card");
-const staffimg = document.querySelector(".staff-card img");
 
 class Worker {
   constructor(name, role, photo, email, tel, experiences) {
@@ -25,6 +22,7 @@ class Worker {
 
     staffname.innerText = this.name;
     staffjob.innerText = this.role;
+    const cardscontainer = document.querySelector(".cards-container");
 
     cardscontainer.appendChild(newcard);
     editBtn.addEventListener("click", () => {
@@ -33,9 +31,19 @@ class Worker {
   }
 }
 
+class Zone {
+  constructor(id, name, allowedroles, nbmax) {
+    this.id = id;
+    this.name = name;
+    this.allowedroles = allowedroles;
+    this.nbmax = nbmax;
+  }
+}
+
 showBtn.addEventListener("click", () => {
   dialogElem.showModal();
 });
-closeBtn.addEventListener("click", () => {
+closeBtn.addEventListener("click", (e) => {
+  e.preventDefault();
   dialogElem.close();
 });

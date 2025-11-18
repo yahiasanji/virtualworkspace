@@ -19,9 +19,9 @@ body {
 .sidebar {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   padding: 1em;
   background-color: hsl(0 0% 98%);
-  overflow-y: auto;
 }
 
 .workspace {
@@ -34,7 +34,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
-  height: 100%;
+  height: 75vh;
   overflow-y: auto;
 }
 
@@ -143,7 +143,7 @@ dialog:open {
 }
 
 dialog {
-  width: 70vw;
+  width: 45vw;
   transform: scale(0);
   transition-property: transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -154,8 +154,11 @@ dialog {
   flex-direction: column;
   align-items: center;
   gap: 1em;
+  overflow-y: auto;
+  max-height: 90vh;
+  font-size: 14px;
   img {
-    width: 100px;
+    width: 80px;
   }
 }
 
@@ -169,19 +172,58 @@ dialog {
   display: flex;
   flex-direction: column;
   gap: 1em;
+  width: 90%;
   div {
     align-self: center;
   }
 }
-select {
-  appearance: base-select;
-  font-size: 0.85rem;
-  font-family: "Geist";
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #5a5a5a;
+  box-shadow: 0 0 0 3px rgba(76, 76, 76, 0.25);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
+
 input,
 select {
-  padding: 1em;
+  padding: 0.75em;
   border-radius: 5px;
   border: 1px solid #a1a1aa;
-  width: 350px;
+  width: 100%;
+}
+
+.subm-btn {
+  background: #27272a;
+  color: #e4e4e7;
+  border: none;
+  transition-duration: 0s;
+}
+.subm-btn:hover {
+  background: #52525b;
+}
+
+.experiences {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+  padding: 0.5em;
+  border: 2px solid #e4e4e7;
+  width: 100%;
+  span {
+    font-weight: 700;
+  }
+  button {
+    background: none;
+    border: none;
+    font-weight: 600;
+    text-align: right;
+  }
+  button:hover {
+    opacity: 0.75;
+  }
+}
+.experiences input {
+  width: 100%;
 }
