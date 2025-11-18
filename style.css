@@ -17,17 +17,12 @@ body {
 }
 
 .sidebar {
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 1em;
   background-color: hsl(0 0% 98%);
-}
-
-.workspace {
-  height: 100vh;
-  padding: 1em;
-  background-color: hsl(240 5.9% 90%);
 }
 
 .cards-container {
@@ -50,7 +45,9 @@ body {
 }
 
 .staff-card > img {
-  width: 100%;
+  width: 36px;
+  height: 36px;
+  border-radius: 50px;
   object-fit: cover;
 }
 
@@ -94,6 +91,9 @@ body {
   color: #a1a1aa;
 }
 .workspace {
+  height: 100vh;
+  padding: 1em;
+  background-color: #f4f4f5;
   display: grid;
   grid-template-columns: 2fr 0.5fr 1fr 1fr;
   grid-template-rows: 2fr 0.5fr 2fr;
@@ -132,7 +132,7 @@ body {
 }
 
 .workspace div {
-  background-color: #52525b;
+  background-color: #d4d4d8;
   width: 100%;
   height: 100%;
   border-radius: 8px;
@@ -203,27 +203,33 @@ select {
 .subm-btn:hover {
   background: #52525b;
 }
-
 .experiences {
+  width: 100%;
+  border: 2px solid #e4e4e7;
+  border-radius: 5px;
+}
+
+.exps-title {
+  font-weight: 700;
+  margin-block: 1em;
+}
+#experience {
   display: flex;
   flex-direction: column;
   gap: 0.75em;
+  width: 100%;
   padding: 0.5em;
-  border: 2px solid #e4e4e7;
-  width: 100%;
-  span {
-    font-weight: 700;
-  }
-  button {
-    background: none;
-    border: none;
-    font-weight: 600;
-    text-align: right;
-  }
-  button:hover {
-    opacity: 0.75;
-  }
+  margin-block: 0.5em;
 }
-.experiences input {
+#experiences input {
   width: 100%;
+}
+#addexp {
+  background: none;
+  border: none;
+  font-weight: 600;
+  text-align: right;
+}
+#addexp:hover {
+  opacity: 0.75;
 }

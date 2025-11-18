@@ -67,19 +67,20 @@
             />
             <label for="email">Email</label>
             <input type="text" name="email" placeholder="Enter The E-mail..." />
-
+            <span class="exps-title">Experiences</span>
             <div class="experiences">
-              <span>Experiences</span>
-              <label for="ex-role">Role</label>
-              <input type="text" name="ex-role" />
-              <label for="company"> Company</label>
-              <input type="text" name="company" />
-              <label for="exp-start">Start Date</label>
-              <input type="date" name="exp-start" />
-              <label for="exp-end">End Date</label>
-              <input type="date" name="exp-end" />
-              <button>+ Add Experience</button>
+              <div id="experience">
+                <label for="ex-role">Role</label>
+                <input type="text" name="ex-role" />
+                <label for="company"> Company</label>
+                <input type="text" name="company" />
+                <label for="exp-start">Start Date</label>
+                <input type="date" name="exp-start" />
+                <label for="exp-end">End Date</label>
+                <input type="date" name="exp-end" />
+              </div>
             </div>
+            <button id="addexp">+ Add Experience</button>
 
             <div>
               <button class="close btn">Close</button>
@@ -90,12 +91,15 @@
       </div>
 
       <div class="workspace">
-        <div class="reception"></div>
-        <div class="conference"></div>
-        <div class="server"></div>
-        <div class="security"></div>
-        <div class="staffroom"></div>
-        <div class="archiveroom"></div>
+        <div class="reception">
+          Reception
+          <button><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <div class="conference">Conference Room</div>
+        <div class="server">Server Room</div>
+        <div class="security">Security Room</div>
+        <div class="staffroom">Staff Room</div>
+        <div class="archiveroom">Archive Room</div>
       </div>
     </div>
 
