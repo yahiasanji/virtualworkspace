@@ -1,3 +1,27 @@
+// DOM Elements
+// Add Worker stuff
+const dialogElem = document.getElementById("addworker");
+const showBtn = document.querySelector(".add");
+const closeBtn = document.querySelector(".close");
+const addnewexp = document.getElementById("addexp");
+const experiences = document.querySelector(".experiences");
+const experience = document.getElementById("experience");
+// Sidebar stuff
+const cardscontainer = document.querySelector(".cards-container");
+const staffcardtmpl = document.getElementById("staffcard");
+// Zones Stuff
+const receptiondiv = document.querySelector(".reception");
+const conferencediv = document.querySelector(".conference");
+const serverdiv = document.querySelector(".server");
+const securitydiv = document.querySelector(".security");
+const staffroomdiv = document.querySelector(".staffroom");
+const archiveroomdiv = document.querySelector(".archiveroom");
+
+const assignedavatar = document.querySelector(".assigned img");
+const avatarpopup = document.createElement("div");
+avatarpopup.className = "avatarpopup";
+let popupTimeout;
+
 // Data Models
 class Worker {
   constructor(name, role, photo, email, tel, experiences) {
@@ -33,22 +57,8 @@ class Zone {
   }
 }
 
-// DOM Elements
-const dialogElem = document.getElementById("addworker");
-const showBtn = document.querySelector(".add");
-const closeBtn = document.querySelector(".close");
-
-const cardscontainer = document.querySelector(".cards-container");
-
-const addnewexp = document.getElementById("addexp");
-const experiences = document.querySelector(".experiences");
-const experience = document.getElementById("experience");
-
-const staffcardtmpl = document.getElementById("staffcard");
-
 // Variables
 let Workers = [];
-const Zones = [];
 
 const Reception = new Zone("1", "Reception", ["Receptionist"], "50", []);
 const Conference = new Zone("2", "Conference Room", ["All"], "10", []);
@@ -57,7 +67,7 @@ const Security = new Zone("4", "Security Room", ["Security Agent"], "3", []);
 const Staffroom = new Zone("5", "Staff Room", ["All"], "10", []);
 const Archive = new Zone("6", "Archive Room", ["All"], "3", []);
 
-Zones = [Reception, Conference, Server, Security, Staffroom, Archive];
+const Zones = [Reception, Conference, Server, Security, Staffroom, Archive];
 
 // Functions
 function addNewExperience() {
@@ -79,5 +89,24 @@ document.addEventListener("DOMContentLoaded", () => {
   addnewexp.addEventListener("click", (e) => {
     e.preventDefault();
     addNewExperience();
+  });
+
+  assignedavatar.addEventListener("click", (e) => {
+    avatarpopup.innerHTML = "Hamid";
+    avatarpopup.style.top = e.target.y - 30 + "px";
+    avatarpopup.style.left = e.target.x;
+    e.target.parentElement.appendChild(avatarpopup);
+    clearTimeout(popupTimeout);
+  });
+  assignedavatar.addEventListener("mouseleave", () => {
+    popupTimeout = setTimeout(() => {
+      avatarpopup.remove();
+    }, 1000);
+  });
+  avatarpopup.addEventListener("mouseenter", () => {
+    clearTimeout(popupTimeout);
+  });
+  avatarpopup.addEventListener("mouseleave", (e) => {
+    e.target.remove();
   });
 });
