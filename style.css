@@ -149,7 +149,6 @@ dialog:open {
 }
 
 dialog {
-  width: 45vw;
   transform: scale(0);
   transition-property: transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -163,14 +162,18 @@ dialog {
   overflow-y: auto;
   max-height: 90vh;
   font-size: 14px;
-  img {
-    width: 80px;
-  }
 }
 
 @starting-style {
   dialog:open {
     transform: scale(0);
+  }
+}
+
+#addworker {
+  width: 45vw;
+  img {
+    width: 80px;
   }
 }
 
@@ -335,6 +338,39 @@ select {
   background: white;
 }
 
+.select-container {
+  display: flex;
+  gap: 1em;
+  img {
+    width: 35px;
+    border-radius: 50px;
+    border: 2px solid;
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f4f5;
+    color: #52525b;
+    padding: 1em;
+    border-radius: 0.5em;
+    gap: 0.5em;
+    align-items: center;
+  }
+  .selected {
+    background-color: #86efac;
+    color: #15803d;
+  }
+}
+#donebtn {
+  font-size: 1.5em;
+  color: #15803d;
+  cursor: pointer;
+  transition: opacity 0.1s ease;
+  &:hover {
+    opacity: 0.75;
+  }
+}
+
 #assignworkermodal {
-  width: 40vw;
+  border: none;
 }

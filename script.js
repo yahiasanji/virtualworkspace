@@ -218,10 +218,6 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
   showUnassigned();
 
-  regions.forEach((r) => {
-    populateRegion(r);
-  });
-
   showBtn.addEventListener("click", () => {
     dialogElem.showModal();
   });
@@ -271,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   assignbtns.forEach((a) => {
     a.addEventListener("click", (e) => {
-      console.log(e.target.closest("div"));
+      console.log(e.target.closest("div").parentElement);
       assignworkermodal.showModal();
     });
   });
