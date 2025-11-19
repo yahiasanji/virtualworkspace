@@ -20,7 +20,8 @@ const securitydiv = document.querySelector(".security");
 const staffroomdiv = document.querySelector(".staffroom");
 const archiveroomdiv = document.querySelector(".archiveroom");
 
-const assignedavatar = document.querySelector(".assigned img");
+const workspace = document.querySelector(".workspace");
+const assignedavatar = document.querySelectorAll(".assigned img");
 const assignbtns = document.querySelectorAll(".zoneheader span");
 const assignmodal = document.getElementById("assignworkermodal");
 
@@ -32,7 +33,9 @@ class Worker {
     this.assigned = assigned;
     this.name = name;
     this.role = role;
-    this.photo = photo;
+    photo
+      ? (this.photo = photo)
+      : (this.photo = "https://avatar.iran.liara.run/public/30");
     this.email = email;
     this.tel = tel;
     this.experiences = experiences;
@@ -51,6 +54,9 @@ class Worker {
       dialogElem.showModal();
     });
   }
+  assign() {
+    this.assigned = true;
+  }
 }
 class Zone {
   constructor(id, name, allowedroles, nbmax, assigned) {
@@ -64,6 +70,7 @@ class Zone {
 
 // Variables
 let Workers = [];
+let UnassignedWorkers = [];
 
 const Reception = new Zone("1", "Reception", ["Receptionist"], "50", []);
 const Conference = new Zone("2", "Conference Room", ["All"], "10", []);
@@ -80,10 +87,83 @@ function addNewExperience() {
   experiences.appendChild(newexp);
 }
 
+function showUnassigned() {
+  UnassignedWorkers = Workers.filter((w) => w.assigned === false);
+
+  UnassignedWorkers.map((m) => m.show());
+}
+
+const regions = workspace.querySelectorAll(".workspace > div");
+
+function populateRegion(region) {
+  let assignedcontainer = document.createElement("div");
+  assignedcontainer.className = "assigned";
+  Workers.forEach((w) => {
+    const avatardiv = document.createElement("div");
+    avatardiv.className = "assigned-avatar";
+    const avatarimg = document.createElement("img");
+    avatarimg.src = w.photo;
+    avatardiv.appendChild(avatarimg);
+    assignedcontainer.appendChild(avatardiv);
+  });
+  region.appendChild(assignedcontainer);
+}
+
 // Main Execution loop
 document.addEventListener("DOMContentLoaded", () => {
-  Workers.push(new Worker(false, "Yahia ABSI", "IT Engineer"));
-  Workers.map((m) => m.show());
+  Workers = [
+    new Worker(
+      false,
+      "Yahia ABSI",
+      "IT Engineer",
+      "https://avatar.iran.liara.run/public/1",
+      "yahiasanji@gmail.com",
+      "+212648388903",
+      []
+    ),
+    new Worker(
+      false,
+      "Khallad Al-Joufi",
+      "Security",
+      "https://avatar.iran.liara.run/public/2",
+      "yahiasanji@gmail.com",
+      "+212648388903",
+      []
+    ),
+    new Worker(
+      false,
+      "Hamza Rifai",
+      "IT Engineer",
+      "https://avatar.iran.liara.run/public/4",
+      "yahiasanji@gmail.com",
+      "+212648388903",
+      []
+    ),
+    new Worker(
+      false,
+      "Nada Sabir",
+      "Receptionist",
+      "https://avatar.iran.liara.run/public/6",
+      "yahiasanji@gmail.com",
+      "+212648388903",
+      []
+    ),
+    new Worker(
+      false,
+      "Ahmad Aboutaha",
+      "Manager",
+      "https://avatar.iran.liara.run/public/10",
+      "yahiasanji@gmail.com",
+      "+212648388903",
+      []
+    ),
+  ];
+  showUnassigned();
+
+  regions.forEach((r) => {
+    populateRegion(r);
+  });
+
   showBtn.addEventListener("click", () => {
     dialogElem.showModal();
   });
@@ -91,6 +171,18 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     dialogElem.close();
   });
+
+  dialogElem.addEventListener("click", (e) => {
+    if (e.target === dialogElem) {
+      dialogElem.close();
+    }
+  });
+  assignworkermodal.addEventListener("click", (e) => {
+    if (e.target === assignworkermodal) {
+      assignworkermodal.close();
+    }
+  });
+
   addnewexp.addEventListener("click", (e) => {
     e.preventDefault();
     addNewExperience();
