@@ -21,7 +21,7 @@ const staffroomdiv = document.querySelector(".staffroom");
 const archiveroomdiv = document.querySelector(".archiveroom");
 
 const assignedavatar = document.querySelector(".assigned img");
-const assignbtn = document.getElementById("assign-btn");
+const assignbtns = document.querySelectorAll(".zoneheader span");
 const assignmodal = document.getElementById("assignworkermodal");
 
 let popupTimeout;
@@ -95,12 +95,6 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     addNewExperience();
   });
-  assignbtn.addEventListener("click", (e) => {
-    let UnassignedWorkers = Workers.filter((w) => {
-      w.assigned === false;
-    });
-    assignmodal.showModal();
-  });
 
   addworkerform.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -123,5 +117,12 @@ document.addEventListener("DOMContentLoaded", () => {
     dialogElem.close();
     addworkerform.reset();
     console.log(Workers);
+  });
+
+  assignbtns.forEach((a) => {
+    a.addEventListener("click", (e) => {
+      console.log(e.target.closest("div"));
+      assignworkermodal.showModal();
+    });
   });
 });

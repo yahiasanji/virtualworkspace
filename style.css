@@ -305,6 +305,7 @@ select {
     box-shadow: 2px 4px 20px #0000007d;
   }
   .assigned-avatar svg {
+    display: none;
     position: absolute;
     transform: translate(30px, 65px);
     z-index: 1;
