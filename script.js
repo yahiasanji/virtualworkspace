@@ -20,6 +20,12 @@ const archiveroomdiv = document.querySelector(".archiveroom");
 const assignedavatar = document.querySelector(".assigned img");
 const avatarpopup = document.createElement("div");
 avatarpopup.className = "avatarpopup";
+const unassignbtn = document.createElement("div");
+const workerinfo = document.createElement("div");
+unassignbtn.innerHTML = "remove";
+workerinfo.innerHTML = "info";
+avatarpopup.appendChild(workerinfo);
+avatarpopup.appendChild(unassignbtn);
 let popupTimeout;
 
 // Data Models
@@ -89,24 +95,5 @@ document.addEventListener("DOMContentLoaded", () => {
   addnewexp.addEventListener("click", (e) => {
     e.preventDefault();
     addNewExperience();
-  });
-
-  assignedavatar.addEventListener("click", (e) => {
-    avatarpopup.innerHTML = "Hamid";
-    avatarpopup.style.top = e.target.y - 30 + "px";
-    avatarpopup.style.left = e.target.x;
-    e.target.parentElement.appendChild(avatarpopup);
-    clearTimeout(popupTimeout);
-  });
-  assignedavatar.addEventListener("mouseleave", () => {
-    popupTimeout = setTimeout(() => {
-      avatarpopup.remove();
-    }, 1000);
-  });
-  avatarpopup.addEventListener("mouseenter", () => {
-    clearTimeout(popupTimeout);
-  });
-  avatarpopup.addEventListener("mouseleave", (e) => {
-    e.target.remove();
   });
 });
