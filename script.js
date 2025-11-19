@@ -65,6 +65,24 @@ class Zone {
     this.allowedroles = allowedroles;
     this.nbmax = nbmax;
     this.assigned = assigned;
+    this.region = document.getElementsByClassName(this.id);
+  }
+
+  add(elem) {
+    this.assigned.push(elem);
+  }
+  populate(list) {
+    let assignedcontainer = document.createElement("div");
+    assignedcontainer.className = "assigned";
+    list.forEach((w) => {
+      const avatardiv = document.createElement("div");
+      avatardiv.className = "assigned-avatar";
+      const avatarimg = document.createElement("img");
+      avatarimg.src = w.photo;
+      avatardiv.appendChild(avatarimg);
+      assignedcontainer.appendChild(avatardiv);
+    });
+    this.region.appendChild(assignedcontainer);
   }
 }
 
@@ -72,12 +90,24 @@ class Zone {
 let Workers = [];
 let UnassignedWorkers = [];
 
-const Reception = new Zone("1", "Reception", ["Receptionist"], "50", []);
-const Conference = new Zone("2", "Conference Room", ["All"], "10", []);
-const Server = new Zone("3", "Server Room", ["IT Technician"], "10", []);
-const Security = new Zone("4", "Security Room", ["Security Agent"], "3", []);
-const Staffroom = new Zone("5", "Staff Room", ["All"], "10", []);
-const Archive = new Zone("6", "Archive Room", ["All"], "3", []);
+const Reception = new Zone(
+  "reception",
+  "Reception",
+  ["Receptionist"],
+  "50",
+  []
+);
+const Conference = new Zone("conference", "Conference Room", ["All"], "10", []);
+const Server = new Zone("server", "Server Room", ["IT Technician"], "10", []);
+const Security = new Zone(
+  "security",
+  "Security Room",
+  ["Security Agent"],
+  "3",
+  []
+);
+const Staffroom = new Zone("staffroom", "Staff Room", ["All"], "10", []);
+const Archive = new Zone("archiveroom", "Archive Room", ["All"], "3", []);
 
 const Zones = [Reception, Conference, Server, Security, Staffroom, Archive];
 
@@ -94,11 +124,17 @@ function showUnassigned() {
 }
 
 const regions = workspace.querySelectorAll(".workspace > div");
+let receptionlist = [];
+let conferencelist = [];
+let serverlist = [];
+let securitylist = [];
+let staffroomlist = [];
+let archivelist = [];
 
-function populateRegion(region) {
+/* function populateRegion(region, list) {
   let assignedcontainer = document.createElement("div");
   assignedcontainer.className = "assigned";
-  Workers.forEach((w) => {
+  list.forEach((w) => {
     const avatardiv = document.createElement("div");
     avatardiv.className = "assigned-avatar";
     const avatarimg = document.createElement("img");
@@ -107,7 +143,29 @@ function populateRegion(region) {
     assignedcontainer.appendChild(avatardiv);
   });
   region.appendChild(assignedcontainer);
+} */
+
+/* function availableworkers() {
+  receptionlist = Workers.filter(
+    (w) => Reception.allowedroles.includes[w.role]
+  );
+  conferencelist = Workers.filter(
+    (w) => Conference.allowedroles.includes[w.role]
+  );
+  serverlist = Workers.filter((w) => Server.allowedroles.includes[w.role]);
+  securitylist = Workers.filter((w) => Security.allowedroles.includes[w.role]);
+  staffroomlist = Workers.filter(
+    (w) => Staffroom.allowedroles.includes[w.role]
+  );
+  archivelist = Workers.filter((w) => Archive.allowedroles.includes[w.role]);
+} */
+
+/* function addtozone(region){
+    region.push(selected Item from available workers)
+    populateRegion(region,Region.assigned);
 }
+   maybe make populateRegion a class method
+*/
 
 // Main Execution loop
 document.addEventListener("DOMContentLoaded", () => {
@@ -133,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
     new Worker(
       false,
       "Hamza Rifai",
-      "IT Engineer",
+      "Cleaner",
       "https://avatar.iran.liara.run/public/4",
       "yahiasanji@gmail.com",
       "+212648388903",

@@ -290,7 +290,7 @@ select {
   align-content: center;
 
   .assigned-avatar {
-    margin-right: -20px;
+    margin-right: -30px;
     transition: transform 0.3s ease-in;
     &:hover:not(:last-of-type) {
       transform: translate(-10px);
