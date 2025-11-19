@@ -302,6 +302,7 @@ select {
     border-radius: 50px;
     border: 3px solid rgb(244 244 245);
     cursor: pointer;
+    box-shadow: 2px 4px 20px #0000007d;
   }
   .assigned-avatar svg {
     position: absolute;
@@ -329,4 +330,8 @@ select {
   position: absolute;
   z-index: 1;
   background: white;
+}
+
+#assignworkermodal {
+  width: 40vw;
 }

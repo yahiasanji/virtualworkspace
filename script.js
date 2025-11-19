@@ -6,6 +6,9 @@ const closeBtn = document.querySelector(".close");
 const addnewexp = document.getElementById("addexp");
 const experiences = document.querySelector(".experiences");
 const experience = document.getElementById("experience");
+// Add Worker Form
+const addworkerform = document.getElementById("Addworker");
+
 // Sidebar stuff
 const cardscontainer = document.querySelector(".cards-container");
 const staffcardtmpl = document.getElementById("staffcard");
@@ -18,19 +21,15 @@ const staffroomdiv = document.querySelector(".staffroom");
 const archiveroomdiv = document.querySelector(".archiveroom");
 
 const assignedavatar = document.querySelector(".assigned img");
-const avatarpopup = document.createElement("div");
-avatarpopup.className = "avatarpopup";
-const unassignbtn = document.createElement("div");
-const workerinfo = document.createElement("div");
-unassignbtn.innerHTML = "remove";
-workerinfo.innerHTML = "info";
-avatarpopup.appendChild(workerinfo);
-avatarpopup.appendChild(unassignbtn);
+const assignbtn = document.getElementById("assign-btn");
+const assignmodal = document.getElementById("assignworkermodal");
+
 let popupTimeout;
 
 // Data Models
 class Worker {
-  constructor(name, role, photo, email, tel, experiences) {
+  constructor(assigned, name, role, photo, email, tel, experiences) {
+    this.assigned = assigned;
     this.name = name;
     this.role = role;
     this.photo = photo;
@@ -83,7 +82,7 @@ function addNewExperience() {
 
 // Main Execution loop
 document.addEventListener("DOMContentLoaded", () => {
-  Workers.push(new Worker("Yahia ABSI", "IT Engineer"));
+  Workers.push(new Worker(false, "Yahia ABSI", "IT Engineer"));
   Workers.map((m) => m.show());
   showBtn.addEventListener("click", () => {
     dialogElem.showModal();
@@ -95,5 +94,34 @@ document.addEventListener("DOMContentLoaded", () => {
   addnewexp.addEventListener("click", (e) => {
     e.preventDefault();
     addNewExperience();
+  });
+  assignbtn.addEventListener("click", (e) => {
+    let UnassignedWorkers = Workers.filter((w) => {
+      w.assigned === false;
+    });
+    assignmodal.showModal();
+  });
+
+  addworkerform.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let newworker = new Worker(
+      false,
+      addworkerform.name.value,
+      addworkerform.role.value,
+      addworkerform.imageurl.value,
+      addworkerform.email.value,
+      addworkerform.phone.value,
+      [
+        addworkerform.exrole.value,
+        addworkerform.company.value,
+        addworkerform.expstart.value,
+        addworkerform.expend.value,
+      ]
+    );
+    Workers.push(newworker);
+    newworker.show();
+    dialogElem.close();
+    addworkerform.reset();
+    console.log(Workers);
   });
 });
