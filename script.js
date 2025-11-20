@@ -22,10 +22,15 @@ const archiveroomdiv = document.querySelector(".archiveroom");
 
 const workspace = document.querySelector(".workspace");
 const assignedavatar = document.querySelectorAll(".assigned img");
-const assignbtns = document.querySelectorAll(".zoneheader span");
 const assignmodal = document.getElementById("assignworkermodal");
+const assignmodalcont = assignmodal.firstElementChild;
+const assignmodaldonebtn = assignmodal.lastElementChild;
 
 let popupTimeout;
+
+// Variables
+let Workers = [];
+let UnassignedWorkers = [];
 
 // Data Models
 class Worker {
@@ -39,6 +44,7 @@ class Worker {
     this.email = email;
     this.tel = tel;
     this.experiences = experiences;
+    this.card = null;
   }
   show() {
     const newcard = staffcardtmpl.content.cloneNode(true);
@@ -53,9 +59,10 @@ class Worker {
     editBtn.addEventListener("click", () => {
       dialogElem.showModal();
     });
+    console.log(newcard);
   }
   assign() {
-    this.assigned = true;
+    this.assigned = !this.assigned;
   }
 }
 class Zone {
@@ -65,40 +72,84 @@ class Zone {
     this.allowedroles = allowedroles;
     this.nbmax = nbmax;
     this.assigned = assigned;
-    this.region = document.getElementsByClassName(this.id);
+    this.region = document.querySelector("." + this.id);
+    this.addbtn = this.region.firstElementChild.lastElementChild;
+    this.assignedcontainer = this.region.lastElementChild;
   }
 
-  add(elem) {
-    this.assigned.push(elem);
+  createavatar(elem) {
+    const avatardiv = document.createElement("div");
+    avatardiv.className = "assigned-avatar";
+    const avatarimg = document.createElement("img");
+    avatarimg.src = elem.photo;
+    avatardiv.appendChild(avatarimg);
+    this.assignedcontainer.appendChild(avatardiv);
   }
-  populate(list) {
-    let assignedcontainer = document.createElement("div");
-    assignedcontainer.className = "assigned";
-    list.forEach((w) => {
-      const avatardiv = document.createElement("div");
-      avatardiv.className = "assigned-avatar";
-      const avatarimg = document.createElement("img");
-      avatarimg.src = w.photo;
-      avatardiv.appendChild(avatarimg);
-      assignedcontainer.appendChild(avatardiv);
+
+  assign(elem) {
+    this.assigned.push(elem);
+    elem.assign();
+    this.createavatar(elem);
+  }
+  populate() {
+    this.assigned.forEach((w) => {
+      this.createavatar(w);
     });
-    this.region.appendChild(assignedcontainer);
+    this.region.appendChild(this.assignedcontainer);
+  }
+
+  filterallowed(list) {
+    if (this.allowedroles.includes("All")) {
+      return list.filter((w) => w.assigned === false);
+    } else {
+      return list.filter(
+        (w) => this.allowedroles.includes(w.role) && w.assigned === false
+      );
+    }
+  }
+  populateassignmodal(list) {
+    if (list.length === 0) {
+      assignmodal.innerHTML = "There are no Workers Available for this region";
+    }
+    assignmodalcont.innerHTML = "";
+    list.forEach((l) => {
+      const newcard = document.createElement("div");
+      newcard.innerHTML = `
+            <div>
+              <img src=${l.photo} />
+              <span style="font-weight: 700">${l.name}</span>
+              <span>${l.role}</span>
+            </div>
+        `;
+      assignmodalcont.appendChild(newcard);
+
+      newcard.addEventListener("click", () => {
+        this.assign(l);
+
+        console.log(this.assigned);
+        assignmodal.close();
+        //something like that
+      });
+    });
+  }
+  selectpopup() {
+    this.addbtn.addEventListener("click", () => {
+      this.populateassignmodal(this.filterallowed(UnassignedWorkers));
+      assignmodal.showModal();
+    });
+    // return selected;
   }
 }
-
-// Variables
-let Workers = [];
-let UnassignedWorkers = [];
 
 const Reception = new Zone(
   "reception",
   "Reception",
-  ["Receptionist"],
+  ["Receptionist", "Manager", "Cleaner"],
   "50",
   []
 );
 const Conference = new Zone("conference", "Conference Room", ["All"], "10", []);
-const Server = new Zone("server", "Server Room", ["IT Technician"], "10", []);
+const Server = new Zone("server", "Server Room", ["IT Engineer"], "10", []);
 const Security = new Zone(
   "security",
   "Security Room",
@@ -217,6 +268,10 @@ document.addEventListener("DOMContentLoaded", () => {
     ),
   ];
   showUnassigned();
+  Zones.forEach((Z) => {
+    Z.populate();
+    Z.selectpopup();
+  });
 
   showBtn.addEventListener("click", () => {
     dialogElem.showModal();
@@ -265,10 +320,5 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(Workers);
   });
 
-  assignbtns.forEach((a) => {
-    a.addEventListener("click", (e) => {
-      console.log(e.target.closest("div").parentElement);
-      assignworkermodal.showModal();
-    });
-  });
+  Zones.forEach((z) => z.selectpopup());
 });
