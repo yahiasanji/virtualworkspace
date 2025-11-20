@@ -40,14 +40,17 @@ class Worker {
     this.role = role;
     photo
       ? (this.photo = photo)
-      : (this.photo = "https://avatar.iran.liara.run/public/30");
+      : (this.photo = "https://avatar.iran.liara.run/public/");
     this.email = email;
     this.tel = tel;
     this.experiences = experiences;
-    this.card = null;
+    this.avatar = null;
   }
   show() {
     const newcard = staffcardtmpl.content.cloneNode(true);
+    console.log(newcard.querySelector(".staff-card"));
+    this.card = newcard.querySelector(".staff-card");
+
     const staffimg = newcard.querySelector(".staff-card img");
     const staffname = newcard.querySelector(".em-name");
     const staffjob = newcard.querySelector(".em-job");
@@ -59,10 +62,12 @@ class Worker {
     editBtn.addEventListener("click", () => {
       dialogElem.showModal();
     });
-    console.log(newcard);
   }
   assign() {
     this.assigned = !this.assigned;
+  }
+  hide() {
+    this.card.remove();
   }
 }
 class Zone {
@@ -75,6 +80,7 @@ class Zone {
     this.region = document.querySelector("." + this.id);
     this.addbtn = this.region.firstElementChild.lastElementChild;
     this.assignedcontainer = this.region.lastElementChild;
+    this.avatartobedeleted = null;
   }
 
   createavatar(elem) {
@@ -84,12 +90,28 @@ class Zone {
     avatarimg.src = elem.photo;
     avatardiv.appendChild(avatarimg);
     this.assignedcontainer.appendChild(avatardiv);
+    elem.avatar = avatardiv;
+    const unassignbtn = document.createElement("span");
+    unassignbtn.innerHTML = `<i style="color: #ef4444" class="fa-solid fa-circle-minus"></i>`;
+    avatardiv.appendChild(unassignbtn);
+    unassignbtn.addEventListener("click", () => {
+      this.unassign(elem);
+    });
   }
 
   assign(elem) {
     this.assigned.push(elem);
+    elem.hide();
     elem.assign();
     this.createavatar(elem);
+  }
+
+  unassign(elem) {
+    this.assigned = this.assigned.filter((a) => a.name !== elem.name);
+    console.log(elem.avatar);
+    elem.avatar.remove();
+    elem.assigned = false;
+    elem.show();
   }
   populate() {
     this.assigned.forEach((w) => {
@@ -134,10 +156,9 @@ class Zone {
   }
   selectpopup() {
     this.addbtn.addEventListener("click", () => {
-      this.populateassignmodal(this.filterallowed(UnassignedWorkers));
+      this.populateassignmodal(this.filterallowed(Workers));
       assignmodal.showModal();
     });
-    // return selected;
   }
 }
 
@@ -233,7 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
     new Worker(
       false,
       "Khallad Al-Joufi",
-      "Security",
+      "Security Agent",
       "https://avatar.iran.liara.run/public/2",
       "yahiasanji@gmail.com",
       "+212648388903",
