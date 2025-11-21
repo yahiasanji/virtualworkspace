@@ -177,6 +177,8 @@ dialog {
   width: 45vw;
   img {
     width: 80px;
+    border: 2px dashed #00000030;
+    border-radius: 50px;
   }
 }
 
@@ -186,9 +188,6 @@ dialog {
   gap: 1em;
   width: 100%;
   padding: 1em;
-  div {
-    align-self: center;
-  }
 }
 .popupheader {
   align-self: flex-start;
@@ -218,35 +217,43 @@ select {
   padding: 0.75em;
   border-radius: 5px;
   border: 1px solid #a1a1aa;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
 }
 
 .subm-btn {
   background: #27272a;
   color: #e4e4e7;
   border: none;
-  transition-duration: 0s;
+  transition-duration: 0.5s;
 }
 .subm-btn:hover {
   background: #52525b;
 }
 .experiences {
   width: 100%;
-  border: 2px solid #e4e4e7;
-  border-radius: 5px;
 }
 
 .exps-title {
   font-weight: 700;
-  margin-block: 1em;
 }
 #experience {
   display: flex;
   flex-direction: column;
   gap: 0.75em;
   width: 100%;
-  padding: 0.5em;
   margin-block: 0.5em;
+  background: #f4f4f5;
+  border-radius: 8px;
+  padding: 1em;
+  > div {
+    display: flex;
+    justify-content: space-between;
+    span:last-of-type:hover {
+      opacity: 0.5;
+    }
+  }
 }
 #experiences input {
   width: 100%;
