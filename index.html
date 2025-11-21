@@ -20,6 +20,7 @@
     />
   </head>
   <body>
+    <div id="errormsg"></div>
     <div class="page">
       <div class="sidebar">
         <h3>Unassigned Staff</h3>
@@ -33,6 +34,7 @@
               </div>
               <span class="edit-btn">
                 <i class="fa-regular fa-pen-to-square"></i>
+                <i class="fa-regular fa-trash-can"></i>
               </span>
             </div>
           </template>
@@ -41,6 +43,14 @@
         <button class="add btn">Add New Worker</button>
 
         <dialog id="addworker">
+          <div class="popupheader">
+            <h3>Add New Worker</h3>
+            <p>
+              Define a new worker and add their information and professional
+              Experiences
+            </p>
+          </div>
+
           <img src="https://avatar.iran.liara.run/public/" alt="" />
           <form id="Addworker">
             <label for="name">Name</label>

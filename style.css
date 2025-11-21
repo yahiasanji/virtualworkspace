@@ -53,8 +53,9 @@ h2 {
   object-fit: cover;
 }
 
-.staff-card > div {
-  display: inherit;
+.staff-card > .card-info {
+  display: flex;
+  flex-direction: column;
   font-size: 14px;
 }
 .staff-card > .card-info :first-child {
@@ -81,17 +82,18 @@ h2 {
 }
 
 .edit-btn {
-  justify-self: center;
-  padding: 10px;
+  display: flex;
   color: #52525b;
-  border-radius: 20px;
   cursor: pointer;
+  gap: 0.35em;
+}
+.edit-btn > i {
   transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  &:hover {
+    color: #a1a1aa;
+  }
 }
 
-.edit-btn:hover {
-  color: #a1a1aa;
-}
 .workspace {
   height: 100vh;
   padding: 1em;
@@ -182,9 +184,24 @@ dialog {
   display: flex;
   flex-direction: column;
   gap: 1em;
-  width: 90%;
+  width: 100%;
+  padding: 1em;
   div {
     align-self: center;
+  }
+}
+.popupheader {
+  align-self: flex-start;
+  padding: 1em;
+
+  h3 {
+    color: #27272a;
+    margin: 0;
+    margin-bottom: 4px;
+  }
+  p {
+    color: #71717a;
+    margin: 0;
   }
 }
 
@@ -343,9 +360,9 @@ select {
   img {
     width: 35px;
     border-radius: 50px;
-    border: 2px solid;
+    border: 2px solid #29252484;
   }
-  div {
+  div > div {
     display: flex;
     flex-direction: column;
     background-color: #f4f4f5;
@@ -355,6 +372,11 @@ select {
     gap: 0.5em;
     align-items: center;
     cursor: pointer;
+    transition: all 0.3s ease-in;
+    &:hover {
+      background-color: #e7e5e4;
+      color: #292524;
+    }
   }
 }
 
@@ -371,3 +393,21 @@ select {
 #assignworkermodal {
   border: none;
 }
+
+/* #errormsg {
+  position: absolute;
+  visibility: hidden;
+  z-index: 1;
+  bottom: 10px;
+  opacity: .6; 
+  left: 35vw;
+  padding: 1em;
+  margin-inline: auto; 
+  text-align: center;
+  width: 30vw;
+  height: 7vh;
+  border-radius: 4px;
+  color: white;
+  background: #ef4444;
+}
+*/

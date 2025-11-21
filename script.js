@@ -30,7 +30,6 @@ let popupTimeout;
 
 // Variables
 let Workers = [];
-let UnassignedWorkers = [];
 
 // Data Models
 class Worker {
@@ -46,6 +45,7 @@ class Worker {
     this.experiences = experiences;
     this.avatar = null;
   }
+
   show() {
     const newcard = staffcardtmpl.content.cloneNode(true);
     console.log(newcard.querySelector(".staff-card"));
@@ -54,7 +54,8 @@ class Worker {
     const staffimg = newcard.querySelector(".staff-card img");
     const staffname = newcard.querySelector(".em-name");
     const staffjob = newcard.querySelector(".em-job");
-    const editBtn = newcard.querySelector(".edit-btn");
+    const editBtn = newcard.querySelector(".edit-btn :first-child");
+    const deletebtn = newcard.querySelector(".edit-btn :last-child");
     if (this.photo) staffimg.src = this.photo;
     staffname.innerText = this.name;
     staffjob.innerText = this.role;
@@ -62,12 +63,20 @@ class Worker {
     editBtn.addEventListener("click", () => {
       dialogElem.showModal();
     });
+    deletebtn.addEventListener("click", () => {
+      this.delete();
+    });
   }
   assign() {
     this.assigned = !this.assigned;
   }
   hide() {
     this.card.remove();
+  }
+  delete() {
+    const index = Workers.findIndex((w) => w === this);
+    if (index != -1) Workers.splice(index, 1);
+    this.hide();
   }
 }
 class Zone {
@@ -112,6 +121,7 @@ class Zone {
     elem.avatar.remove();
     elem.assigned = false;
     elem.show();
+    this.populateassignmodal(this.filterallowed(Workers));
   }
   populate() {
     this.assigned.forEach((w) => {
@@ -130,9 +140,9 @@ class Zone {
     }
   }
   populateassignmodal(list) {
-    if (list.length === 0) {
+    /* if (list.length === 0) {
       assignmodal.innerHTML = "There are no Workers Available for this region";
-    }
+    }*/
     assignmodalcont.innerHTML = "";
     list.forEach((l) => {
       const newcard = document.createElement("div");
@@ -156,6 +166,10 @@ class Zone {
   }
   selectpopup() {
     this.addbtn.addEventListener("click", () => {
+      if (this.filterallowed(Workers).length === 0) {
+        alert("There are no available workers to assign to this region");
+        return;
+      }
       this.populateassignmodal(this.filterallowed(Workers));
       assignmodal.showModal();
     });
@@ -170,16 +184,28 @@ const Reception = new Zone(
   []
 );
 const Conference = new Zone("conference", "Conference Room", ["All"], "10", []);
-const Server = new Zone("server", "Server Room", ["IT Engineer"], "10", []);
+const Server = new Zone(
+  "server",
+  "Server Room",
+  ["IT Engineer", "Manager", "Cleaner"],
+  "10",
+  []
+);
 const Security = new Zone(
   "security",
   "Security Room",
-  ["Security Agent"],
+  ["Security Agent", "Manager", "Cleaner"],
   "3",
   []
 );
 const Staffroom = new Zone("staffroom", "Staff Room", ["All"], "10", []);
-const Archive = new Zone("archiveroom", "Archive Room", ["All"], "3", []);
+const Archive = new Zone(
+  "archiveroom",
+  "Archive Room",
+  ["IT Engineer", "Manager", "Security Agent"],
+  "3",
+  []
+);
 
 const Zones = [Reception, Conference, Server, Security, Staffroom, Archive];
 
@@ -187,12 +213,6 @@ const Zones = [Reception, Conference, Server, Security, Staffroom, Archive];
 function addNewExperience() {
   const newexp = experience.cloneNode(true);
   experiences.appendChild(newexp);
-}
-
-function showUnassigned() {
-  UnassignedWorkers = Workers.filter((w) => w.assigned === false);
-
-  UnassignedWorkers.map((m) => m.show());
 }
 
 const regions = workspace.querySelectorAll(".workspace > div");
@@ -288,11 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
       []
     ),
   ];
-  showUnassigned();
-  Zones.forEach((Z) => {
-    Z.populate();
-    Z.selectpopup();
-  });
+  Workers.map((m) => m.show());
 
   showBtn.addEventListener("click", () => {
     dialogElem.showModal();
