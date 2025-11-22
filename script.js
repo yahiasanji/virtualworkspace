@@ -5,7 +5,7 @@ const showBtn = document.querySelector(".add");
 const closeBtn = document.querySelector(".close");
 const addnewexp = document.getElementById("addexp");
 const experiences = document.querySelector(".experiences");
-const experience = document.getElementById("experience");
+const experience = document.querySelector(".experience");
 // Add Worker Form
 const addworkerform = document.getElementById("Addworker");
 
@@ -222,13 +222,27 @@ function rmExperience() {
   });
 }
 
-const regions = workspace.querySelectorAll(".workspace > div");
-let receptionlist = [];
-let conferencelist = [];
-let serverlist = [];
-let securitylist = [];
-let staffroomlist = [];
-let archivelist = [];
+function parseExperiences() {
+  return Array.from(experiences.querySelectorAll(".experience")).map((exp) => ({
+    Role: exp.querySelector('input[name="exrole"]').value,
+    Company: exp.querySelector('input[name="company"]').value,
+    StartDate: exp.querySelector('input[name="expstart"]').value,
+    EndDate: exp.querySelector('input[name="expend"]').value,
+  }));
+}
+
+// Validation stuff
+const nameregex = /^[A-Z][a-z]+\s[A-Za-z]+$/gm;
+const rolecompanyregex = /^([A-Z]+[a-z]*){1,30}\s?[A-za-z]{1,30}$/gm;
+const phoneregex = /^((\+212|0)|(6|5|7))+\d{8}/gm;
+const emailregex = /^[a-zA-Z].[^@]*@\w+\.(\w){3}$/gm;
+function showinputError(input, msg) {
+  const inputerr = document.createElement("span");
+  inputerr.textContent = msg;
+  inputerr.className = "inputerrmsg";
+  input.after(inputerr);
+  input.classList.toggle("inputerr");
+}
 
 // Main Execution loop
 document.addEventListener("DOMContentLoaded", () => {
@@ -276,13 +290,24 @@ document.addEventListener("DOMContentLoaded", () => {
       "https://avatar.iran.liara.run/public/10",
       "yahiasanji@gmail.com",
       "+212648388903",
-      []
+      [
+        {
+          Role: "Cloud Engineer",
+          Company: "IBM",
+          StartDate: "2020-02-15",
+          EndDate: "2024-06-30",
+        },
+      ]
     ),
   ];
   Workers.map((m) => m.show());
 
   showBtn.addEventListener("click", () => {
     dialogElem.showModal();
+    addworkerform.reset();
+    while (experiences.childNodes.length > 2) {
+      experiences.removeChild(experiences.lastChild);
+    }
     rmExperience();
   });
   closeBtn.addEventListener("click", (e) => {
@@ -306,7 +331,8 @@ document.addEventListener("DOMContentLoaded", () => {
     addNewExperience();
     rmExperience();
   });
-
+  // input validation, show error on input
+  showinputError(addworkerform.name, "Khalid");
   // form submission
   addworkerform.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -317,18 +343,12 @@ document.addEventListener("DOMContentLoaded", () => {
       addworkerform.imageurl.value,
       addworkerform.email.value,
       addworkerform.phone.value,
-      [
-        addworkerform.exrole.value,
-        addworkerform.company.value,
-        addworkerform.expstart.value,
-        addworkerform.expend.value,
-      ]
+      parseExperiences()
     );
     Workers.push(newworker);
     newworker.show();
-    dialogElem.close();
     addworkerform.reset();
-    console.log(Workers);
+    dialogElem.close();
   });
 
   Zones.forEach((z) => z.selectpopup());
