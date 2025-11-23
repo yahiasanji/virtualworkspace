@@ -186,28 +186,29 @@ dialog {
 #Addworker {
   display: flex;
   flex-direction: column;
-  gap: 1em;
   width: 100%;
+  gap: 0.25em;
   padding: 1em;
 }
 .inputerr {
-  box-shadow: 0 0 0 3px rgba(217, 19, 19, 0.355);
+  box-shadow: 0 0 0 3px #fca5a5;
 }
 .inputerr:focus {
-  box-shadow: 0 0 0 3px rgba(213, 32, 32, 0.355);
+  box-shadow: 0 0 0 3px #fca5a5;
 }
 .inputsucc {
-  box-shadow: 0 0 0 3px rgba(0, 255, 47, 0.355);
+  box-shadow: 0 0 0 3px #86efac;
 }
 .inputsucc:focus {
-  box-shadow: 0 0 0 3px rgba(0, 255, 17, 0.355);
+  box-shadow: 0 0 0 3px F#86efac;
 }
 .inputsuccmsg {
-  color: green;
+  color: #22c55e;
+  visibility: hidden;
 }
 
 .inputerrmsg {
-  color: red;
+  color: #ef4444;
   visibility: hidden;
 }
 .popupheader {
@@ -245,7 +246,6 @@ select {
 
 label {
   font-weight: 500;
-  margin-bottom: -0.5em;
 }
 
 .subm-btn {
@@ -419,6 +419,11 @@ label {
   border: none;
 }
 
+.required {
+  background-color: #fecaca !important;
+  color: #dc2626 !important;
+}
+
 /* #errormsg {
   position: absolute;
   visibility: hidden;
@@ -474,5 +479,83 @@ label {
   to {
     opacity: 0;
     transform: scale(0.8);
+  }
+}
+#info {
+  h4 {
+    margin: 0;
+  }
+  & > div {
+    width: 65vw;
+    height: 80vh;
+    display: flex;
+    gap: 1em;
+    flex-direction: column;
+    align-items: center;
+
+    img {
+      width: 100px;
+    }
+
+    & > div {
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (min-width: 728px) and (max-width: 1279px) {
+  .page {
+    grid-template-columns: 50px 1fr;
+  }
+  .sidebar {
+    padding: 0;
+  }
+  .sidebar > h3 {
+    display: none;
+  }
+  .cards-container {
+    padding-block: 1em;
+    align-items: center;
+  }
+  .staff-card {
+    display: block;
+    background: none;
+    padding: 0;
+    margin: 0;
+  }
+  .staff-card img {
+    border: 2px solid #c5c5c575;
+    box-shadow: 0 0 5px #93939373;
+  }
+  .staff-card :not(img) {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .page {
+    display: block;
+  }
+  .workspace {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "reception"
+      "conference"
+      "server"
+      "security"
+      "staffroom"
+      "archiveroom";
+  }
+  .select-container {
+    flex-direction: column;
+    gap: 1em;
+    > div {
+      width: 100%;
+      margin: auto; /* Magic! */
+    }
+  }
+  #addworker {
+    width: 85vw;
   }
 }

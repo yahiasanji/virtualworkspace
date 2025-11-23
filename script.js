@@ -26,7 +26,10 @@ const assignmodal = document.getElementById("assignworkermodal");
 const assignmodalcont = assignmodal.firstElementChild;
 const assignmodaldonebtn = assignmodal.lastElementChild;
 
-let popupTimeout;
+// Employee Info
+const infodialog = document.getElementById("info");
+const infodiv = infodialog.querySelector("#info>div");
+const infoimg = infodiv.querySelector("img");
 
 // Variables
 let Workers = [];
@@ -78,9 +81,13 @@ class Worker {
     if (index != -1) Workers.splice(index, 1);
     this.hide();
   }
+
+  info() {
+    infodialog.showModal();
+  }
 }
 class Zone {
-  constructor(id, name, allowedroles, nbmax, assigned) {
+  constructor(id, name, allowedroles, nbmax, assigned, req) {
     this.id = id;
     this.name = name;
     this.allowedroles = allowedroles;
@@ -90,6 +97,8 @@ class Zone {
     this.addbtn = this.region.firstElementChild.lastElementChild;
     this.assignedcontainer = this.region.lastElementChild;
     this.avatartobedeleted = null;
+    this.req = req;
+    this.showreq();
   }
 
   createavatar(elem) {
@@ -122,6 +131,7 @@ class Zone {
     elem.assigned = false;
     elem.show();
     this.populateassignmodal(this.filterallowed(Workers));
+    this.showreq();
   }
   populate() {
     this.assigned.forEach((w) => {
@@ -137,6 +147,14 @@ class Zone {
       return list.filter(
         (w) => this.allowedroles.includes(w.role) && w.assigned === false
       );
+    }
+  }
+
+  showreq() {
+    if (this.req === true && this.assigned.length === 0) {
+      this.region.classList.add("required");
+    } else {
+      this.region.classList.remove("required");
     }
   }
   populateassignmodal(list) {
@@ -156,7 +174,9 @@ class Zone {
         this.assign(l);
 
         console.log(this.assigned);
+        this.showreq();
         assignmodal.close();
+
         //something like that
       });
     });
@@ -167,6 +187,11 @@ class Zone {
         alert("There are no available workers to assign to this region");
         return;
       }
+      if (this.assigned.length == this.nbmax) {
+        alert("Maximum Number Reached");
+        return;
+      }
+
       this.populateassignmodal(this.filterallowed(Workers));
       assignmodal.showModal();
     });
@@ -177,31 +202,42 @@ const Reception = new Zone(
   "reception",
   "Reception",
   ["Receptionist", "Manager", "Cleaner"],
-  "50",
-  []
+  50,
+  [],
+  true
 );
-const Conference = new Zone("conference", "Conference Room", ["All"], "10", []);
+const Conference = new Zone(
+  "conference",
+  "Conference Room",
+  ["All"],
+  10,
+  [],
+  false
+);
 const Server = new Zone(
   "server",
   "Server Room",
   ["IT Engineer", "Manager", "Cleaner"],
-  "10",
-  []
+  10,
+  [],
+  true
 );
 const Security = new Zone(
   "security",
   "Security Room",
   ["Security Agent", "Manager", "Cleaner"],
-  "3",
-  []
+  2,
+  [],
+  true
 );
-const Staffroom = new Zone("staffroom", "Staff Room", ["All"], "10", []);
+const Staffroom = new Zone("staffroom", "Staff Room", ["All"], 10, [], false);
 const Archive = new Zone(
   "archiveroom",
   "Archive Room",
   ["IT Engineer", "Manager", "Security Agent"],
-  "3",
-  []
+  3,
+  [],
+  true
 );
 
 const Zones = [Reception, Conference, Server, Security, Staffroom, Archive];
@@ -236,13 +272,24 @@ const nameregex = /^[A-Z][a-z]+\s[A-Za-z]+$/gm;
 const rolecompanyregex = /^([A-Z]+[a-z]*){1,30}\s?[A-za-z]{1,30}$/gm;
 const phoneregex = /^((\+212|0)|(6|5|7))+\d{8}/gm;
 const emailregex = /^[a-zA-Z].[^@]*@\w+\.(\w){3}$/gm;
-function showinputError(input, msg) {
-  const inputerr = document.createElement("span");
+function showinputError(input, msg, state) {
+  const inputerr = document.querySelector(".inputerrmsg");
   inputerr.textContent = msg;
-  inputerr.className = "inputerrmsg";
-  input.after(inputerr);
-  input.classList.toggle("inputerr");
+  if (state) {
+    inputerr.className = "inputerrmsg";
+    input.classList.toggle("inputerr");
+    inputerr.style.visibility = "visible";
+  } else {
+    inputerr.className = "inputsuccmsg";
+    inputerr.style.visibility = "visible";
+    input.classList.toggle("inputsucc");
+  }
 }
+
+addworkerform.name.addEventListener("input", (e) => {
+  const isvalid = nameregex.test(e.target.value);
+  showinputError(e.target, "Enter a valid Name", isvalid);
+});
 
 // Main Execution loop
 document.addEventListener("DOMContentLoaded", () => {
@@ -332,24 +379,38 @@ document.addEventListener("DOMContentLoaded", () => {
     rmExperience();
   });
   // input validation, show error on input
-  showinputError(addworkerform.name, "Khalid");
+  //showinputError(addworkerform.name, "Khalid", 1);
+  // addworkerform.inputs.forEeach(i => i.addEventListener("input",()=>{checkifvalid and show error}))
+  addworkerform.imageurl.addEventListener("input", (e) => {
+    dialogElem.querySelector("img").src = e.target.value;
+  });
+
   // form submission
   addworkerform.addEventListener("submit", (e) => {
     e.preventDefault();
-    let newworker = new Worker(
-      false,
-      addworkerform.name.value,
-      addworkerform.role.value,
-      addworkerform.imageurl.value,
-      addworkerform.email.value,
-      addworkerform.phone.value,
-      parseExperiences()
-    );
-    Workers.push(newworker);
-    newworker.show();
-    addworkerform.reset();
-    dialogElem.close();
+    if (requiredcheck()) {
+      let newworker = new Worker(
+        false,
+        addworkerform.name.value,
+        addworkerform.role.value,
+        addworkerform.imageurl.value,
+        addworkerform.email.value,
+        addworkerform.phone.value,
+        parseExperiences()
+      );
+      Workers.push(newworker);
+      newworker.show();
+      addworkerform.reset();
+      dialogElem.close();
+    }
   });
 
-  Zones.forEach((z) => z.selectpopup());
+  Zones.forEach((z) => {
+    z.selectpopup();
+    //Zones.forEach((z) => z.showreq());
+  });
+  const tabletQuery = window.matchMedia("(max-width: 1279px)");
+  if (tabletQuery.matches) {
+    showBtn.innerHTML = `<i class="fa-solid fa-plus"></i>`;
+  }
 });
