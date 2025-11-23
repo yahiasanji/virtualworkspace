@@ -178,6 +178,7 @@ dialog {
   width: 45vw;
   img {
     width: 80px;
+    aspect-ratio: 1;
     border: 2px dashed #00000030;
     border-radius: 50px;
   }
@@ -190,27 +191,7 @@ dialog {
   gap: 0.25em;
   padding: 1em;
 }
-.inputerr {
-  box-shadow: 0 0 0 3px #fca5a5;
-}
-.inputerr:focus {
-  box-shadow: 0 0 0 3px #fca5a5;
-}
-.inputsucc {
-  box-shadow: 0 0 0 3px #86efac;
-}
-.inputsucc:focus {
-  box-shadow: 0 0 0 3px F#86efac;
-}
-.inputsuccmsg {
-  color: #22c55e;
-  visibility: hidden;
-}
 
-.inputerrmsg {
-  color: #ef4444;
-  visibility: hidden;
-}
 .popupheader {
   align-self: flex-start;
   padding: 1em;
@@ -239,9 +220,32 @@ select {
   padding: 0.75em;
   border-radius: 5px;
   border: 1px solid #a1a1aa;
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   gap: 0.5em;
+}
+
+.inputerr {
+  box-shadow: 0 0 0 3px #fca5a5 !important;
+}
+.inputerr:focus {
+  box-shadow: 0 0 0 3px #fca5a5 !important;
+}
+.inputsucc {
+  box-shadow: 0 0 0 3px #86efac !important;
+}
+.inputsucc:focus {
+  box-shadow: 0 0 0 3px F#86efac !important;
+}
+.inputsuccmsg {
+  color: #22c55e;
+  visibility: hidden;
+}
+
+.inputerrmsg {
+  color: #ef4444;
+  visibility: hidden;
 }
 
 label {

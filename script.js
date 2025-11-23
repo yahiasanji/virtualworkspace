@@ -8,6 +8,7 @@ const experiences = document.querySelector(".experiences");
 const experience = document.querySelector(".experience");
 // Add Worker Form
 const addworkerform = document.getElementById("Addworker");
+const allInputs = addworkerform.querySelectorAll("input, select");
 
 // Sidebar stuff
 const cardscontainer = document.querySelector(".cards-container");
@@ -102,7 +103,7 @@ class Worker {
             <span>${ex.Role}</span>
             <span>${ex.Company}</span>
             <span>${ex.StartDate} - ${ex.EndDate}</span>
-        
+
         `;
       infoexperiences.appendChild(experience);
     });
@@ -295,28 +296,40 @@ function parseExperiences() {
 }
 
 // Validation stuff
-const nameregex = /^[A-Z][a-z]+\s[A-Za-z]+$/gm;
+/* const nameregex = /^[A-Z][a-z]+\s[A-Za-z]+$/gm;
 const rolecompanyregex = /^([A-Z]+[a-z]*){1,30}\s?[A-za-z]{1,30}$/gm;
-const phoneregex = /^((\+212|0)|(6|5|7))+\d{8}/gm;
-const emailregex = /^[a-zA-Z].[^@]*@\w+\.(\w){3}$/gm;
-function showinputError(input, msg, state) {
-  const inputerr = document.querySelector(".inputerrmsg");
-  inputerr.textContent = msg;
-  if (state) {
-    inputerr.className = "inputerrmsg";
-    input.classList.toggle("inputerr");
-    inputerr.style.visibility = "visible";
-  } else {
-    inputerr.className = "inputsuccmsg";
-    inputerr.style.visibility = "visible";
-    input.classList.toggle("inputsucc");
+const phoneregex = /^((\+212|0)|(6|5|7))+\d{9}/gm;
+const emailregex = /^[a-zA-Z].[^@]*@\w+\.(\w){3}$/gm; */
+const emailregex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const phoneregex = /^[\d\s\-\+\(\)]{10,}$/;
+
+function showError(input, message) {
+  const errorSpan = input.nextElementSibling;
+  if (errorSpan && errorSpan.classList.contains("inputerrmsg")) {
+    errorSpan.textContent = message;
+    errorSpan.style.visibility = "visible";
+    input.classList.remove("inputsucc");
+    input.classList.add("inputerr");
   }
 }
 
-addworkerform.name.addEventListener("input", (e) => {
-  const isvalid = nameregex.test(e.target.value);
-  showinputError(e.target, "Enter a valid Name", isvalid);
-});
+function showSuccess(input) {
+  const errorSpan = input.nextElementSibling;
+  if (errorSpan && errorSpan.classList.contains("inputerrmsg")) {
+    errorSpan.textContent = "";
+    errorSpan.style.visibility = "hidden";
+    input.classList.remove("inputerr");
+    input.classList.add("inputsucc");
+  }
+}
+function clearError(input) {
+  const errorSpan = input.nextElementSibling;
+  if (errorSpan && errorSpan.classList.contains("inputerrmsg")) {
+    errorSpan.textContent = "";
+    errorSpan.style.visibility = "hidden";
+    input.classList.remove("inputerr", "inputsucc");
+  }
+}
 
 // Main Execution loop
 document.addEventListener("DOMContentLoaded", () => {
@@ -379,6 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
   showBtn.addEventListener("click", () => {
     dialogElem.showModal();
     addworkerform.reset();
+    allInputs.forEach(clearError);
     while (experiences.childNodes.length > 2) {
       experiences.removeChild(experiences.lastChild);
     }
@@ -414,28 +428,84 @@ document.addEventListener("DOMContentLoaded", () => {
   // input validation, show error on input
   //showinputError(addworkerform.name, "Khalid", 1);
   // addworkerform.inputs.forEeach(i => i.addEventListener("input",()=>{checkifvalid and show error}))
+
+  // form validation
+  addworkerform.name.addEventListener("input", (e) => {
+    if (e.target.value.length > 2) {
+      showSuccess(e.target);
+      console.log("valid name");
+    } else {
+      showError(e.target, "Name must be at least 2 characters");
+    }
+  });
+
+  addworkerform.role.addEventListener("input", (e) => {
+    if (e.target.value.length >= 2) {
+      showSuccess(e.target);
+    } else {
+      showError(e.target, "Role must be at least 2 characters");
+    }
+  });
+
+  addworkerform.email.addEventListener("input", (e) => {
+    if (emailregex.test(e.target.value)) {
+      showSuccess(e.target);
+    } else {
+      showError(e.target, "Please enter a valid email address");
+    }
+  });
+
+  addworkerform.phone.addEventListener("input", (e) => {
+    if (phoneregex.test(e.target.value)) {
+      showSuccess(e.target);
+    } else {
+      showError(
+        e.target,
+        "Please enter a valid phone number (at least 10 digits)"
+      );
+    }
+  });
+
   addworkerform.imageurl.addEventListener("input", (e) => {
-    dialogElem.querySelector("img").src = e.target.value;
+    try {
+      new URL(e.target.value);
+      dialogElem.querySelector("img").src = e.target.value;
+      showSuccess(e.target);
+    } catch {
+      // URL is invalid
+      showError(e.target, "Please enter a valid URL");
+    }
+  });
+
+  addworkerform.expend.addEventListener("input", (e) => {
+    const startDate = new Date(addworkerform.expstart.value);
+    const endDate = new Date(e.target.value);
+    if (endDate < startDate) {
+      showError(addworkerform.expend, "End date must be after start date");
+    } else {
+      showSuccess(addworkerform.expstart);
+      showSuccess(addworkerform.expend);
+    }
   });
 
   // form submission
   addworkerform.addEventListener("submit", (e) => {
     e.preventDefault();
-    if (requiredcheck()) {
-      let newworker = new Worker(
-        false,
-        addworkerform.name.value,
-        addworkerform.role.value,
-        addworkerform.imageurl.value,
-        addworkerform.email.value,
-        addworkerform.phone.value,
-        parseExperiences()
-      );
-      Workers.push(newworker);
-      newworker.show();
-      addworkerform.reset();
-      dialogElem.close();
-    }
+
+    let newworker = new Worker(
+      false,
+      addworkerform.name.value,
+      addworkerform.role.value,
+      addworkerform.imageurl.value,
+      addworkerform.email.value,
+      addworkerform.phone.value,
+      parseExperiences()
+    );
+    Workers.push(newworker);
+    newworker.show();
+
+    addworkerform.reset();
+    dialogElem.close();
   });
 
   Zones.forEach((z) => {
