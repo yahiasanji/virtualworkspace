@@ -30,6 +30,12 @@ const assignmodaldonebtn = assignmodal.lastElementChild;
 const infodialog = document.getElementById("info");
 const infodiv = infodialog.querySelector("#info>div");
 const infoimg = infodiv.querySelector("img");
+const infoname = infodiv.querySelector("h2");
+const inforole = infodiv.querySelector("h4");
+const infophone = infodiv.querySelector("#infophone");
+const infomail = infodiv.querySelector("#infomail");
+const infozone = infodiv.querySelector("#infozone");
+const infoexperiences = infodiv.querySelector("#infoexperiences");
 
 // Variables
 let Workers = [];
@@ -47,6 +53,7 @@ class Worker {
     this.tel = tel;
     this.experiences = experiences;
     this.avatar = null;
+    this.zone = "";
   }
 
   show() {
@@ -83,6 +90,22 @@ class Worker {
   }
 
   info() {
+    infoimg.src = this.photo;
+    infoname.innerText = this.name;
+    inforole.innerText = this.role;
+    infophone.innerText = this.tel;
+    infomail.innerText = this.email;
+    infozone.innerText = this.zone;
+    this.experiences.forEach((ex) => {
+      const experience = document.createElement("div");
+      experience.innerHTML = `
+            <span>${ex.Role}</span>
+            <span>${ex.Company}</span>
+            <span>${ex.StartDate} - ${ex.EndDate}</span>
+        
+        `;
+      infoexperiences.appendChild(experience);
+    });
     infodialog.showModal();
   }
 }
@@ -115,12 +138,16 @@ class Zone {
     unassignbtn.addEventListener("click", () => {
       this.unassign(elem);
     });
+    avatarimg.addEventListener("click", () => {
+      elem.info();
+    });
   }
 
   assign(elem) {
     this.assigned.push(elem);
     elem.hide();
     elem.assign();
+    elem.zone = this.name;
     this.createavatar(elem);
   }
 
@@ -365,6 +392,12 @@ document.addEventListener("DOMContentLoaded", () => {
   dialogElem.addEventListener("click", (e) => {
     if (e.target === dialogElem) {
       dialogElem.close();
+    }
+  });
+
+  infodialog.addEventListener("click", (e) => {
+    if (e.target === infodialog) {
+      infodialog.close();
     }
   });
   assignworkermodal.addEventListener("click", (e) => {
